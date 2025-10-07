@@ -100,7 +100,7 @@ class NnModel:
             plt.show()
         elif self.x.shape[1] == 3:
             ax = plt.axes(projection='3d')
-            ax.scatter(self.x[:, 0], self.x[:, 1], self.x[:, 2], s=40, c=y_, cmap='cool', alpha=0.7)
+            ax.scatter(self.x[:, 0], self.x[:, 1], self.x[:, 2], s=40, c=self.y, cmap='cool', alpha=0.7)
 
     def fit(self, epochs: int, lr: float, show_plot: bool = False):
 
@@ -122,6 +122,7 @@ class NnModel:
         return predictions
 
 
+#_______________________________________________________________________________________________________________________
 
 #modelo = NnModel(x, y, 10, 2)
 #result = modelo.fit(500, 0.001)
@@ -131,7 +132,7 @@ class NnModel:
 #plt.show()
 
 # Cluster dataset
-x_, y_= datasets.make_blobs(n_samples=400, n_features=2, centers=4, random_state=10, cluster_std=0.9, shuffle=True)
+'''x_, y_= datasets.make_blobs(n_samples=400, n_features=2, centers=4, random_state=10, cluster_std=0.9, shuffle=True)
 print(x_.shape)
 print(y_.shape)
 np.unique(y_, return_counts=True)
@@ -155,3 +156,29 @@ plt.show()
 
 modelo_3d = NnModel(x_, y_, 8, 4)
 result = modelo_3d.fit(500, 0.001)
+'''
+# Novo dataframe
+df = datasets.load_breast_cancer(as_frame=True)
+
+
+x_bc = df.data.to_numpy()[:, 4:9]
+y_bc = df.target.to_numpy()
+
+print(x_bc.shape)
+print(y_bc.shape)
+
+#bc = NnModel(x_bc, y_bc, 8, 2)
+#bc.fit(2000, 0.0003)
+
+# Criar o modelo salvo
+'''with open('modelo_treinado.pickle', 'wb') as f:
+    pickle.dump(bc, f)'''
+
+# Carregar o modelo salvo
+with open("C:\\Users\\Nitro\\PyCharmMiscProject\\Rede_Neural_do_Zero\\modelo_treinado.pickle", 'rb') as f:
+    modelo_carregado = pickle.load(f)
+
+previsao = np.round(modelo_carregado.forward(np.array([0.085, 0.064, 0.15, 0.21, 0.078])),3)
+print(previsao)
+
+
